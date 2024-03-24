@@ -1,110 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Trello Clone</title>
     <%!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --%>
-    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
-</head>
-<body class="bg-gray-100">
-<div class="container mx-auto py-8">
-    <header class="container mx-auto py-8">
-        <!-- Board Header -->
-        <div class="flex justify-between items-center mb-8">
-            <!-- Board Name (Editable) -->
-            <div id="boardName" class="text-2xl font-bold cursor-pointer">My Board</div>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js">
+    </script>
+  </head>
+  <body class="bg-gray-100">
+  <div class="container mx-auto py-8">
+        <div class="flex">
+            <!-- Board Lists -->
+            <div id="todo-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
+                <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">To Do</div>
+                <div class="p-4" id="todo-items">
+                    <!-- List Items -->
+                    <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="1">Task 1</div>
+                    <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="2">Task 2</div>
+                    <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="3">Task 3</div>
+                </div>
+                <div class="p-4">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
+                </div>
+            </div>
+            <!-- Another List -->
+            <div id="inprogress-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
+                <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">In Progress</div>
+                <div class="p-4" id="inprogress-items">
+                    <!-- List Items -->
+                    <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="4">Task 4</div>
+                    <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="5">Task 5</div>
+                </div>
+                <div class="p-4">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
+                </div>
+            </div>
+            <!-- Another List -->
+            <div id="done-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
+                <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">Done</div>
+                <div class="p-4" id="done-items">
+                    <!-- List Items -->
+                    <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="6">Task 6</div>
+                    <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="7">Task 7</div>
+                    <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="8">Task 8</div>
+                </div>
+                <div class="p-4">
+                    <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
+                </div>
+            </div>
 
-            <!-- Board Controls -->
-            <div class="flex items-center">
-                <!-- Star Icon Button -->
-                <button id="starBtn" class="bg-yellow-400 text-white px-3 py-1 rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6 fill-current">
-                        <path d="M0 0h24v24H0V0z" fill="none"/>
-                        <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
-                    </svg>
-                </button>
-
-                <!-- Visibility Button -->
-                <button id="visibilityBtn" class="bg-blue-500 text-white px-3 py-1 rounded-md">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="h-6 w-6 fill-current">
-                        <path d="M0 0h24v24H0V0z" fill="none"/>
-                        <path d="M12 4c2.76 0 5 2.24 5 5s-2.24 5-5 5-5-2.24-5-5 2.24-5 5-5m0-2c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zM12 15c1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3 1.34 3 3 3m0-8c-2.67 0-8 1.34-8 4v5c0 .55.45 1 1 1h14c.55 0 1-.45 1-1v-5c0-2.66-5.33-4-8-4z"/>
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </header>
-
-    <div class="flex">
-        <!-- Board Lists -->
-        <div id="todo-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
-            <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">To Do</div>
-            <div class="p-4" id="todo-items">
-                <!-- List Items -->
-                <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="1">Task 1</div>
-                <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="2">Task 2</div>
-                <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="3">Task 3</div>
-            </div>
-            <div class="p-4">
-                <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
-            </div>
-        </div>
-        <!-- Another List -->
-        <div id="inprogress-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
-            <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">In Progress</div>
-            <div class="p-4" id="inprogress-items">
-                <!-- List Items -->
-                <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="4">Task 4</div>
-                <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="5">Task 5</div>
-            </div>
-            <div class="p-4">
-                <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
-            </div>
-        </div>
-        <!-- Another List -->
-        <div id="done-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
-            <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">Done</div>
-            <div class="p-4" id="done-items">
-                <!-- List Items -->
-                <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="6">Task 6</div>
-                <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="7">Task 7</div>
-                <div class="task-item bg-gray-100 p-2 rounded-md mb-2" data-id="8">Task 8</div>
-            </div>
-            <div class="p-4">
-                <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
-            </div>
-        </div>
-        <!-- Add Column Button -->
-        <div id="add-column" class="w-1/4 bg-white rounded-lg shadow-md">
-            <div class="p-4">
-                <button class="bg-green-500 text-white px-4 py-2 rounded-md">Add Column</button>
+                        <!-- Add Column Button -->
+            <div id="add-column" class="w-1/4 bg-white rounded-lg shadow-md">
+                <div class="p-4">
+                    <button class="bg-green-500 text-white px-4 py-2 rounded-md">Add Column</button>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Modal -->
-<div id="taskModal" class="modal hidden fixed inset-0 z-50 overflow-auto bg-gray-500 bg-opacity-50 flex justify-center items-center">
-    <!-- Modal content -->
-    <div class="bg-white w-1/2 p-6 rounded-lg">
-        <div id="taskName" class="font-bold text-xl mb-4"></div>
-        <label for="description" class="block mb-2">Description</label>
-        <textarea id="description" class="w-full px-3 py-2 border rounded-md mb-4"></textarea>
-        <div id="activity" class="mb-4">
-            <h2 class="text-lg font-semibold mb-2">Activity</h2>
-            <!-- Activity log will be added dynamically here -->
-            <button id="showActivityBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md">Show Details</button>
-        </div>
-        <div id="commentSection">
-            <h2 class="text-lg font-semibold mb-2">Comments</h2>
-            <textarea id="commentInput" class="w-full px-3 py-2 border rounded-md mb-2"></textarea>
-            <button id="addCommentBtn" class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Comment</button>
-            <!-- Comments will be added dynamically here -->
-        </div>
-        <button id="closeModalBtn" class="bg-gray-300 text-gray-700 px-4 py-2 rounded-md mt-4">Close</button>
-    </div>
-</div>
 
 <script>
     // Function to create a new column
@@ -189,75 +143,7 @@
     // Add Column Button Functionality
     const addColumnBtn = document.getElementById('add-column');
     addColumnBtn.addEventListener('click', createNewColumn);
-
-    // Event listener for Enter key press on existing input fields
-    const existingInputs = document.querySelectorAll('.column-title-input');
-    existingInputs.forEach(inputField => {
-        inputField.addEventListener('keypress', function (event) {
-            if (event.key === 'Enter') {
-                inputField.blur(); // Remove focus from input field
-            }
-        });
-
-        // Event listener for input field losing focus
-        inputField.addEventListener('blur', function () {
-            const inputValue = inputField.value.trim();
-            const columnContainer = inputField.closest('.list-container');
-            if (inputValue === '') {
-                // If the input is empty, remove the entire column
-                columnContainer.remove();
-            } else {
-                // Otherwise, replace the input with a div containing the column title
-                const columnTitle = document.createElement('div');
-                columnTitle.textContent = inputValue;
-                columnTitle.classList.add('px-4', 'py-2', 'bg-gray-200', 'text-gray-700', 'font-semibold');
-                columnContainer.replaceChild(columnTitle, inputField);
-            }
-        });
-    });
-
-    // Function to open the modal with task details
-    function openTaskModal(taskName) {
-        const modal = document.getElementById('taskModal');
-        const taskNameElement = document.getElementById('taskName');
-        taskNameElement.textContent = taskName;
-        modal.classList.remove('hidden');
-    }
-
-    // Function to close the modal
-    function closeTaskModal() {
-        const modal = document.getElementById('taskModal');
-        modal.classList.add('hidden');
-    }
-
-    // Event listeners for opening the modal on task click
-    const taskItems = document.querySelectorAll('.task-item');
-    taskItems.forEach(task => {
-        task.addEventListener('click', function () {
-            const taskName = task.textContent;
-            openTaskModal(taskName);
-        });
-    });
-
-    // Event listener for closing the modal
-    const closeModalBtn = document.getElementById('closeModalBtn');
-    closeModalBtn.addEventListener('click', closeTaskModal);
-
-    // Event listener for showing activity details
-    const showActivityBtn = document.getElementById('showActivityBtn');
-    showActivityBtn.addEventListener('click', function () {
-        // Implement logic to show activity details
-        alert('Show activity details');
-    });
-
-    // Event listener for adding comment
-    const addCommentBtn = document.getElementById('addCommentBtn');
-    addCommentBtn.addEventListener('click', function () {
-        const commentInput = document.getElementById('commentInput').value;
-        // Implement logic to add comment
-        console.log('New comment:', commentInput);
-    });
 </script>
-</body>
-</html>
 
+  </body>
+</html>
