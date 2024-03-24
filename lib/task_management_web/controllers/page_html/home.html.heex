@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Trello Clone</title>
+    <%!-- <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet"> --%>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js">
+    </script>
+  </head>
+  <body class="bg-gray-100">
+    <div class="container mx-auto py-8">
+      <div class="flex">
+        <!-- Board Lists -->
+        <div id="todo-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
+          <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">To Do</div>
+          <div class="p-4" id="todo-items">
+            <!-- List Items -->
+            <div class="bg-gray-100 p-2 rounded-md mb-2" data-id="1">Task 1</div>
+            <div class="bg-gray-100 p-2 rounded-md mb-2" data-id="2">Task 2</div>
+            <div class="bg-gray-100 p-2 rounded-md mb-2" data-id="3">Task 3</div>
+          </div>
+          <div class="p-4">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
+          </div>
+        </div>
+        <!-- Another List -->
+        <div id="inprogress-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
+          <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">In Progress</div>
+          <div class="p-4" id="inprogress-items">
+            <!-- List Items -->
+            <div class="bg-gray-100 p-2 rounded-md mb-2" data-id="4">Task 4</div>
+            <div class="bg-gray-100 p-2 rounded-md mb-2" data-id="5">Task 5</div>
+          </div>
+          <div class="p-4">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
+          </div>
+        </div>
+        <!-- Another List -->
+        <div id="done-list" class="w-1/4 bg-white rounded-lg shadow-md mr-4">
+          <div class="px-4 py-2 bg-gray-200 text-gray-700 font-semibold">Done</div>
+          <div class="p-4" id="done-items">
+            <!-- List Items -->
+            <div class="bg-gray-100 p-2 rounded-md mb-2" data-id="6">Task 6</div>
+            <div class="bg-gray-100 p-2 rounded-md mb-2" data-id="7">Task 7</div>
+            <div class="bg-gray-100 p-2 rounded-md mb-2" data-id="8">Task 8</div>
+          </div>
+          <div class="p-4">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
+          </div>
+        </div>
+        <!-- Add Column Button -->
+        <div id="add-column" class="w-1/4 bg-white rounded-lg shadow-md">
+          <div class="p-4">
+            <button class="bg-green-500 text-white px-4 py-2 rounded-md">Add Column</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    // Function to create a new column
+    function createNewColumn() {
+        const newColumn = document.createElement('div');
+        newColumn.classList.add('list-container', 'w-1/4', 'bg-white', 'rounded-lg', 'shadow-md', 'mr-4');
+        newColumn.innerHTML = `
+            <input type="text" class="column-title-input px-4 py-2 bg-gray-200 text-gray-700 font-semibold w-full rounded-t-lg focus:outline-none" placeholder="Enter column title...">
+            <div class="p-4" id="new-column-items">
+                <!-- List Items -->
+            </div>
+            <div class="p-4">
+                <button class="add-task-button bg-blue-500 text-white px-4 py-2 rounded-md">Add Task</button>
+            </div>
+        `;
+        const columnsContainer = document.querySelector('.flex');
+        columnsContainer.insertBefore(newColumn, addColumnBtn);
+
+        // Focus on the input field of the newly created column
+        const inputField = newColumn.querySelector('.column-title-input');
+        inputField.focus();
+
+        // Event listener for Enter key press on input field
+        inputField.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                inputField.blur(); // Remove focus from input field
+            }
+        });
+
+        // Event listener for input field losing focus
+        inputField.addEventListener('blur', function () {
+            const inputValue = inputField.value.trim();
+            if (inputValue === '') {
+                // If the input is empty, remove the entire column
+                newColumn.remove();
+            } else {
+                // Otherwise, replace the input with a div containing the column title
+                const columnTitle = document.createElement('div');
+                columnTitle.textContent = inputValue;
+                columnTitle.classList.add('px-4', 'py-2', 'bg-gray-200', 'text-gray-700', 'font-semibold');
+                newColumn.replaceChild(columnTitle, inputField);
+            }
+        });
+
+        // Event listener for Add Task button
+        const addTaskBtn = newColumn.querySelector('.add-task-button');
+        addTaskBtn.addEventListener('click', function () {
+            const taskInput = document.createElement('input');
+            taskInput.classList.add('task-input', 'block', 'w-full', 'px-4', 'py-2', 'bg-gray-100', 'rounded-md', 'mb-2', 'focus:outline-none');
+            taskInput.placeholder = 'Enter task...';
+            const taskContainer = newColumn.querySelector('#new-column-items');
+            taskContainer.appendChild(taskInput);
+            taskInput.focus();
+        });
+    }
+
+    // Initialize Sortable.js for each list
+    new Sortable(document.getElementById('todo-items'), {
+        group: 'shared',
+        animation: 150,
+        onEnd: function (evt) {
+            console.log('Element was moved:', evt.item);
+        }
+    });
+
+    new Sortable(document.getElementById('inprogress-items'), {
+        group: 'shared',
+        animation: 150,
+        onEnd: function (evt) {
+            console.log('Element was moved:', evt.item);
+        }
+    });
+
+    new Sortable(document.getElementById('done-items'), {
+        group: 'shared',
+        animation: 150,
+        onEnd: function (evt) {
+            console.log('Element was moved:', evt.item);
+        }
+    });
+
+    // Add Column Button Functionality
+    const addColumnBtn = document.getElementById('add-column');
+    addColumnBtn.addEventListener('click', createNewColumn);
+
+    // Event listener for Enter key press on existing input fields
+    const existingInputs = document.querySelectorAll('.column-title-input');
+    existingInputs.forEach(inputField => {
+        inputField.addEventListener('keypress', function (event) {
+            if (event.key === 'Enter') {
+                inputField.blur(); // Remove focus from input field
+            }
+        });
+
+        // Event listener for input field losing focus
+        inputField.addEventListener('blur', function () {
+            const inputValue = inputField.value.trim();
+            const columnContainer = inputField.closest('.list-container');
+            if (inputValue === '') {
+                // If the input is empty, remove the entire column
+                columnContainer.remove();
+            } else {
+                // Otherwise, replace the input with a div containing the column title
+                const columnTitle = document.createElement('div');
+                columnTitle.textContent = inputValue;
+                columnTitle.classList.add('px-4', 'py-2', 'bg-gray-200', 'text-gray-700', 'font-semibold');
+                columnContainer.replaceChild(columnTitle, inputField);
+            }
+        });
+    });
+</script>
+
+  </body>
+</html>
