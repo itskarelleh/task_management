@@ -3,3 +3,16 @@
 @import "tailwindcss/utilities";
 
 /* This file is for your main application CSS */
+@layer components {
+    .container {
+        @apply flex;
+    }
+    
+    .column {
+        @apply p-10 m-5 w-72 bg-gray-100 cursor-grab;
+    }
+
+    .columns {
+        @apply whitespace-nowrap;
+    }
+}

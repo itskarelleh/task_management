@@ -18,6 +18,10 @@ defmodule TaskManagementWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :home
+    get "/demo", PageController, :demo
+    get "/signup", PageController, :signup
+    get "/signin", PageController, :signin
+    
   end
 
   # Other scopes may use custom stacks.
